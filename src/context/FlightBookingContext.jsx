@@ -1,49 +1,74 @@
-// FlightBookingContext.js
-import React, { createContext, useState, useContext } from 'react';
-import axios from 'axios';
+// import { createContext, useContext, useState } from "react";
 
-// Create the context
+// // ✅ Create Context
+// const FlightBookingContext = createContext();
+
+// // ✅ Provider Component
+// export const FlightBookingProvider = ({ children }) => {
+//   const [flightDetails, setFlightDetails] = useState(null);
+//   const [passengerDetails, setPassengerDetails] = useState([]);
+
+//   // ✅ Save flight search data
+//   const saveFlightDetails = (details) => {
+//     setFlightDetails(details);
+//     setPassengerDetails(
+//       Array.from({ length: details.passengers }, () => ({
+//         firstName: "",
+//         lastName: "",
+//         age: "",
+//         gender: "",
+//       }))
+//     );
+//   };
+
+//   return (
+//     <FlightBookingContext.Provider
+//       value={{
+//         flightDetails,
+//         passengerDetails,
+//         setPassengerDetails,
+//         saveFlightDetails,
+//       }}
+//     >
+//       {children}
+//     </FlightBookingContext.Provider>
+//   );
+// };
+
+// // ✅ Custom Hook
+// export const useFlightBooking = () => useContext(FlightBookingContext);
+
+import { createContext, useContext, useState } from "react";
+
 const FlightBookingContext = createContext();
 
-// Create the provider component
 export const FlightBookingProvider = ({ children }) => {
   const [flightDetails, setFlightDetails] = useState(null);
-  const [passengerDetails, setPassengerDetails] = useState([]);
+  const [bookingId, setBookingId] = useState(null);
 
-  // Function to handle flight search submission
-  const submitFlightSearch = (details) => {
+  // ✅ Save Flight Search Data
+  const saveFlightDetails = (details) => {
     setFlightDetails(details);
   };
 
-  // Function to handle passenger details submission
-  const submitPassengerDetails = async (details) => {
-    setPassengerDetails(details);
-
-    // Combine flight and passenger details
-    const bookingData = {
-      flight: flightDetails,
-      passengers: details,
-    };
-
-    try {
-      // Send data to the backend API
-      const response = await axios.post('YOUR_API_ENDPOINT', bookingData);
-      console.log('Booking successful:', response.data);
-      // Handle successful booking (e.g., navigate to a confirmation page)
-    } catch (error) {
-      console.error('Error during booking:', error);
-      // Handle error (e.g., display an error message to the user)
-    }
+  // ✅ Reset flight details (after booking)
+  const resetFlightDetails = () => {
+    setFlightDetails(null);
   };
 
   return (
     <FlightBookingContext.Provider
-      value={{ flightDetails, submitFlightSearch, submitPassengerDetails }}
+      value={{
+        flightDetails,
+        saveFlightDetails,
+        resetFlightDetails,
+        bookingId,
+        setBookingId,
+      }}
     >
       {children}
     </FlightBookingContext.Provider>
   );
 };
 
-// Custom hook to use the FlightBookingContext
 export const useFlightBooking = () => useContext(FlightBookingContext);

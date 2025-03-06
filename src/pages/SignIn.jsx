@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +22,7 @@ const SignIn = () => {
     if (token) {
       navigate("/dashboard");
     }
-  }, [navigate]);
+  }, []);
 
   // ✅ Set up React Hook Form
   const {

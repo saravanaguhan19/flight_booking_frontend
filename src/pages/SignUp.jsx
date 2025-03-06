@@ -43,7 +43,9 @@ const SignUp = () => {
 
       if (response.data.status === "success") {
         toast.success("Signup successful! Please log in.");
-        navigate("/signin");
+        // localStorage.setItem("token", response.data.data.token);
+        // localStorage.setItem("email", data.email);
+        // navigate("/dashboard");
       } else {
         toast.error(response.data.message);
       }
