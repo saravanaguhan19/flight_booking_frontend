@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 
-const FlightSearch = ({ onSearch }) => {
+const FlightSearch = ({ onSearch, resetFields }) => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState(null);
@@ -13,31 +13,39 @@ const FlightSearch = ({ onSearch }) => {
     value: i + 1,
     label: `${i + 1} Passenger${i > 0 ? "s" : ""}`,
   }));
-  
+
+  // ✅ Reset input fields when resetFields is triggered (after booking)
+  useEffect(() => {
+    if (resetFields) {
+      setOrigin("");
+      setDestination("");
+      setDate(null);
+      setPassengers(null);
+    }
+  }, [resetFields]);
+
+  // ✅ Handle Date Selection & Format
   const handleDateChange = (selectedDate) => {
-    // Format the date as YYYY-MM-DD
-    const formattedDate = formatDate(selectedDate);
-    setDate(formattedDate);
+    setDate(formatDate(selectedDate));
   };
 
-  // Function to format the date as YYYY-MM-DD
+  // ✅ Format Date to YYYY-MM-DD
   const formatDate = (date) => {
     const year = date.getFullYear();
-    const month = date.getMonth() + 1; // Months are zero-based
+    const month = date.getMonth() + 1;
     const day = date.getDate();
-
-    // Format to YYYY-MM-DD
     return `${year}-${month < 10 ? "0" + month : month}-${
       day < 10 ? "0" + day : day
     }`;
   };
 
+  // ✅ Handle Form Submission
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch({ origin, destination, date, passengers });
   };
 
-  // ✅ Check if all fields are filled before enabling the button
+  // ✅ Enable button only if all fields are filled
   const isFormValid = origin && destination && date && passengers;
 
   return (
@@ -61,28 +69,12 @@ const FlightSearch = ({ onSearch }) => {
           className="p-3 border rounded-lg w-full sm:w-[18%] shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
         />
         <div className="relative w-full sm:w-[18%]">
-          {/* <DatePicker
-            selected={date}
-            onChange={(date) => setDate(date)}
-            placeholderText="Select Date"
-            className="p-3 border rounded-lg w-full shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          /> */}
           <DatePicker
             selected={date ? new Date(date) : null}
             onChange={handleDateChange}
             placeholderText="Select Date"
             className="p-3 border rounded-lg w-full shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
-
-          {/* <DatePicker
-            selected={date}
-            onChange={(date) => {
-              // const formatedDate = formatDate(date);
-              return setDate(date);
-            }}
-            placeholderText="Select Date"
-            className="p-3 border rounded-lg w-full shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          /> */}
         </div>
         <div className="w-full sm:w-[18%]">
           <Select

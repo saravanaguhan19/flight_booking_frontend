@@ -8,7 +8,7 @@ import { useAuth } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import BookingSummary from "./pages/BookingSummary";
+// import BookingSummary from "./pages/BookingSummary";
 import MyBookings from "./pages/MyBookings";
 
 const App = () => {
@@ -29,10 +29,10 @@ const App = () => {
           element={user ? <Dashboard /> : <Navigate to="/signin" />}
         />
 
-        <Route
+        {/* <Route
           path="/booking-summary/:flightId"
           element={user ? <BookingSummary /> : <Navigate to="/signin" />}
-        />
+        /> */}
         <Route
           path="/bookings"
           element={user ? <MyBookings /> : <Navigate to="/signin" />}

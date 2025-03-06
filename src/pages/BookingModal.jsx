@@ -55,7 +55,7 @@ const BookingModal = ({ booking, onClose, onUpdate }) => {
       {/* Booking Modal */}
       <div className="bg-white p-6 rounded-lg max-w-lg w-full shadow-lg relative z-10">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Edit Booking</h2>
+          <h2 className="text-xl font-bold">View & Edit Booking</h2>
           <button onClick={onClose} className="text-red-500">
             <FaTimes />
           </button>
