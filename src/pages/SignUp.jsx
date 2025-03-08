@@ -1,10 +1,12 @@
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import apiUrl from "../config";
+import Header from "../components/Header"; // ✅ Import Header for minimal mode
+import { useForm } from "react-hook-form";
 
 // ✅ Define Zod validation schema
 const schema = z.object({
@@ -43,9 +45,7 @@ const SignUp = () => {
 
       if (response.data.status === "success") {
         toast.success("Signup successful! Please log in.");
-        // localStorage.setItem("token", response.data.data.token);
-        // localStorage.setItem("email", data.email);
-        // navigate("/dashboard");
+        navigate("/signin"); // ✅ Redirect to SignIn page
       } else {
         toast.error(response.data.message);
       }
@@ -62,14 +62,19 @@ const SignUp = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <div className="w-96 bg-white p-6 shadow-md rounded-lg">
-          <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
+      {/* ✅ Minimal Header with Logo */}
+      <Header minimal />
+
+      <div className="flex justify-center items-center h-screen bg-gray-100 dark:bg-gray-900">
+        <div className="w-96 bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg">
+          <h2 className="text-2xl font-bold text-center mb-4 text-gray-800 dark:text-white">
+            Sign Up
+          </h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <input
                 {...register("username")}
-                className="w-full p-2 border rounded"
+                className="w-full p-3 border rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="Username"
               />
               {errors.username && (
@@ -83,7 +88,7 @@ const SignUp = () => {
               <input
                 {...register("email")}
                 type="email"
-                className="w-full p-2 border rounded"
+                className="w-full p-3 border rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="Email"
               />
               {errors.email && (
@@ -95,7 +100,7 @@ const SignUp = () => {
               <input
                 {...register("password")}
                 type="password"
-                className="w-full p-2 border rounded"
+                className="w-full p-3 border rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="Password"
               />
               {errors.password && (
@@ -107,12 +112,12 @@ const SignUp = () => {
 
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+              className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition duration-300"
             >
               Sign Up
             </button>
           </form>
-          <p className="text-center mt-4 text-gray-600">
+          <p className="text-center mt-4 text-gray-600 dark:text-gray-300">
             Already a member?{" "}
             <Link to="/signin" className="text-blue-500">
               Sign In
