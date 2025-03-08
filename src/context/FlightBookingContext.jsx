@@ -1,43 +1,3 @@
-// import { createContext, useContext, useState } from "react";
-
-// // ✅ Create Context
-// const FlightBookingContext = createContext();
-
-// // ✅ Provider Component
-// export const FlightBookingProvider = ({ children }) => {
-//   const [flightDetails, setFlightDetails] = useState(null);
-//   const [passengerDetails, setPassengerDetails] = useState([]);
-
-//   // ✅ Save flight search data
-//   const saveFlightDetails = (details) => {
-//     setFlightDetails(details);
-//     setPassengerDetails(
-//       Array.from({ length: details.passengers }, () => ({
-//         firstName: "",
-//         lastName: "",
-//         age: "",
-//         gender: "",
-//       }))
-//     );
-//   };
-
-//   return (
-//     <FlightBookingContext.Provider
-//       value={{
-//         flightDetails,
-//         passengerDetails,
-//         setPassengerDetails,
-//         saveFlightDetails,
-//       }}
-//     >
-//       {children}
-//     </FlightBookingContext.Provider>
-//   );
-// };
-
-// // ✅ Custom Hook
-// export const useFlightBooking = () => useContext(FlightBookingContext);
-
 import { createContext, useContext, useState } from "react";
 
 const FlightBookingContext = createContext();
@@ -45,25 +5,16 @@ const FlightBookingContext = createContext();
 export const FlightBookingProvider = ({ children }) => {
   const [flightDetails, setFlightDetails] = useState(null);
   const [bookingId, setBookingId] = useState(null);
-
-  // ✅ Save Flight Search Data
-  const saveFlightDetails = (details) => {
-    setFlightDetails(details);
-  };
-
-  // ✅ Reset flight details (after booking)
-  const resetFlightDetails = () => {
-    setFlightDetails(null);
-  };
-
+  const [bookingInProgress, setBookingInProgress] = useState(false);
   return (
     <FlightBookingContext.Provider
       value={{
         flightDetails,
-        saveFlightDetails,
-        resetFlightDetails,
+        setFlightDetails,
         bookingId,
         setBookingId,
+        bookingInProgress,
+        setBookingInProgress,
       }}
     >
       {children}
@@ -71,4 +22,5 @@ export const FlightBookingProvider = ({ children }) => {
   );
 };
 
+// Custom Hook for easier access
 export const useFlightBooking = () => useContext(FlightBookingContext);

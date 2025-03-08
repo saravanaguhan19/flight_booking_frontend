@@ -1,6 +1,8 @@
+
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useFlightBooking } from "../context/FlightBookingContext"; // ✅ Use context
 import FlightSearch from "../components/FlightSearch";
 import PassengerDetail from "../components/PassengerDetail";
 import BookingSummary from "../components/BookingSummary";
@@ -10,7 +12,7 @@ import { motion } from "framer-motion";
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [flightDetails, setFlightDetails] = useState(null);
+  const { flightDetails, setFlightDetails } = useFlightBooking(); // ✅ Use flight details from context
   const [bookingId, setBookingId] = useState(null);
   const [showBookingProgress, setShowBookingProgress] = useState(false);
   const [showBookingSummary, setShowBookingSummary] = useState(false);
@@ -21,14 +23,9 @@ const Dashboard = () => {
 
   if (!user) return null;
 
-  const handleFlightSearch = (details) => {
-    setFlightDetails(details);
-    setShowBookingSummary(false);
-  };
-
   const handlePassengerSubmit = (createdBookingId) => {
-    setFlightDetails(null); // ✅ Hide Passenger Form First
-    setShowBookingProgress(true); // ✅ Start Showing "Booking in Progress"
+    setFlightDetails(null); // ✅ Hide Passenger Form
+    setShowBookingProgress(true); // ✅ Show Loading Animation
 
     setTimeout(() => {
       setShowBookingProgress(false);
@@ -38,12 +35,12 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
       <Header />
 
       <div className="max-w-4xl mx-auto py-10 px-6">
         <motion.h2
-          className="text-3xl font-semibold text-indigo-500 text-center mb-6"
+          className="text-3xl font-semibold text-indigo-500 dark:text-white text-center mb-6"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -52,28 +49,22 @@ const Dashboard = () => {
         </motion.h2>
 
         <motion.div
-          className="bg-white p-6 shadow-xl rounded-lg"
+          className="bg-white dark:bg-gray-800 p-6 shadow-xl rounded-lg"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
-          <FlightSearch
-            onSearch={handleFlightSearch}
-            resetFields={showBookingProgress}
-          />
+          <FlightSearch />
         </motion.div>
 
         {flightDetails && !showBookingProgress && (
           <motion.div
-            className="mt-6 bg-white p-6 shadow-xl rounded-lg"
+            className="mt-6 bg-white dark:bg-gray-800 p-6 shadow-xl rounded-lg"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <PassengerDetail
-              flightDetails={flightDetails}
-              onSubmit={handlePassengerSubmit}
-            />
+            <PassengerDetail onSubmit={handlePassengerSubmit} />
           </motion.div>
         )}
 
@@ -85,7 +76,7 @@ const Dashboard = () => {
             transition={{ duration: 0.5 }}
           >
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
-            <p className="mt-4 text-lg font-semibold text-blue-600">
+            <p className="mt-4 text-lg font-semibold text-blue-600 dark:text-white">
               Booking in progress...
             </p>
           </motion.div>
@@ -93,7 +84,7 @@ const Dashboard = () => {
 
         {showBookingSummary && (
           <motion.div
-            className="mt-6 bg-white p-6 shadow-xl rounded-lg"
+            className="mt-6 bg-white dark:bg-gray-800 p-6 shadow-xl rounded-lg"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
@@ -107,4 +98,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
