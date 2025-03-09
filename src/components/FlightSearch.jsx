@@ -2,7 +2,6 @@ import { useForm, Controller } from "react-hook-form";
 import { useFlightBooking } from "../context/FlightBookingContext";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Select from "react-select";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 
@@ -128,6 +127,7 @@ const FlightSearch = () => {
           </div>
 
           {/* Passenger Count */}
+          {/* Passenger Count */}
           <div className="relative">
             <Controller
               name="passengers"
@@ -136,8 +136,12 @@ const FlightSearch = () => {
               render={({ field }) => (
                 <select
                   {...field}
-                  className={`p-3 border rounded-lg w-full sm:w-[22%] shadow-sm focus:ring-2 focus:ring-blue-400 
-        dark:focus:ring-gray-600 focus:outline-none bg-white dark:bg-gray-700 text-black dark:text-white`}
+                  className={`p-3 border rounded-lg w-full shadow-sm focus:ring-2 focus:outline-none 
+          ${
+            errors.passengers
+              ? "border-red-500 focus:ring-red-400"
+              : "border-gray-300 focus:ring-blue-400 dark:border-gray-600 dark:focus:ring-gray-600 dark:bg-gray-700 dark:text-white"
+          }`}
                 >
                   <option value="">Select Passengers</option>
                   {Array.from({ length: 10 }, (_, i) => (
@@ -171,4 +175,3 @@ const FlightSearch = () => {
 };
 
 export default FlightSearch;
-
