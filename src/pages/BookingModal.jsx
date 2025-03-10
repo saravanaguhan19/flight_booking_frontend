@@ -1,9 +1,8 @@
-
-
 import { useState } from "react";
 import axios from "axios";
 import { FaTimes, FaEdit } from "react-icons/fa";
 import apiUrl from "../config";
+import toast from "react-hot-toast";
 
 const BookingModal = ({ booking, onClose, onUpdate }) => {
   const [editedBooking, setEditedBooking] = useState(booking);
@@ -41,11 +40,11 @@ const BookingModal = ({ booking, onClose, onUpdate }) => {
       );
 
       if (response.data.status === "success") {
-        alert("Booking updated successfully!");
+        toast.success("Booking updated successfully!");
         onUpdate();
         onClose();
       } else {
-        alert("Error updating booking.");
+        toast.error("Error updating booking.");
       }
     } catch (error) {
       console.error("Failed to update booking:", error);

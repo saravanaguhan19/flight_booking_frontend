@@ -22,9 +22,9 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      console.log("Response ", response);
+      
       if (response.data.status === "success") {
-        console.log("Response token ", response.data.data.token);
+    
         localStorage.setItem("token", response.data.data.token);
         localStorage.setItem("email", email);
         setUser({ email, token: response.data.data.token });

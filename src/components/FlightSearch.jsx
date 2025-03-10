@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { format } from "date-fns";
 
 const FlightSearch = () => {
   const { setFlightDetails, bookingInProgress } = useFlightBooking();
@@ -109,7 +110,13 @@ const FlightSearch = () => {
                 <DatePicker
                   {...field}
                   selected={field.value}
-                  onChange={(date) => field.onChange(date)}
+                  onChange={(date) => {
+                    if (date) {
+                      const formattedDate = format(date, "yyyy-MM-dd"); // ✅ Format date before storing
+                      field.onChange(formattedDate);
+                    }
+                  }}
+                  dateFormat="yyyy-MM-dd"
                   placeholderText="Select Date"
                   className={`p-3 border rounded-lg w-full shadow-sm focus:ring-2 focus:outline-none ${
                     errors.date
